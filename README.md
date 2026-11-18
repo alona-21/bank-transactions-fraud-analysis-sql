@@ -53,7 +53,7 @@ All fraud rates use labelled transactions only. Overall: 5,609 fraud cases in 3,
 - The dataset is described as built for synthetic fraud detection, and some patterns (swipe being the safest channel, fraud almost vanishing after 8 PM) are unlike real-world fraud. Treat the findings as patterns in this dataset.
 - 2019 covers January to October only.
 - `current_age` is age at the dataset's reference date, not at transaction time. With only 2,000 customers, age groups are really groups of customers.
-- A few users have a yearly income under $1,000 and a per-capita income of 0 and were excluded from income analysis.
+- 8 of 2,000 users have a yearly income under $1,000 and a per-capita income of 0 and were excluded from income analysis.
 
 ## Repository structure
 
