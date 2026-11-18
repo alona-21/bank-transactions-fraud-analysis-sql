@@ -4,7 +4,7 @@ An SQL project in PostgreSQL on about 5.3 million card transactions (2016 to Oct
 
 ## Data
 
-- **Source:** *Financial Transactions Dataset: Analytics*, created by Caixabank Tech for the 2024 AI Hackathon, on Kaggle. [https://www.kaggle.com/datasets/computingvictor/transactions-fraud-datasets]
+- **Source:** *Financial Transactions Dataset: Analytics*, created by Caixabank Tech for the 2024 AI Hackathon, on [Kaggle](https://www.kaggle.com/datasets/computingvictor/transactions-fraud-datasets).
 - **License:** Apache 2.0.
 - **What I used:** A subset of the original dataset (about 1.4 GB), limited to 2016 to October 2019 and to the columns needed for this analysis. Card numbers and CVV were not used. Row counts are listed in the table below.
 
@@ -16,7 +16,7 @@ An SQL project in PostgreSQL on about 5.3 million card transactions (2016 to Oct
 | cards | 6,146 | card type, limit, chip; card numbers and CVV not used |
 | mcc_codes | 109 | merchant category descriptions |
 
-The data files are not included. The original dataset is on Kaggle (link above). The SQL expects five tables (users, cards, mcc_codes, transactions, fraud_labels) imported from CSV; sql/01_cleaning_and_setup.sql then fixes the column types and adds keys and indexes.
+The data files are not included. The original dataset is on Kaggle (link above). The SQL expects five tables (users, cards, mcc_codes, transactions, fraud_labels) imported from CSV; `sql/01_cleaning_and_setup.sql` then fixes the column types and adds keys and indexes.
 
 ## Tools
 
@@ -25,7 +25,7 @@ PostgreSQL and DBeaver.
 ## Process
 
 1. Imported the CSV files and fixed the column types (money columns stored as text with `$`, dates stored as text, ZIP codes read as numbers).
-2. Added primary keys and indexes so joins on 5.3 million rows run in seconds.
+2. Added primary keys and indexes on the columns used for joins and filters.
 3. Checked row counts against the source files, the date and amount ranges, and the share of transactions with a fraud label.
 4. Analyzed spending, then fraud by category, amount, payment channel, error type, time of day, customer age, and card type.
 
@@ -39,7 +39,7 @@ All fraud rates use labelled transactions only. Overall: 5,609 fraud cases in 3,
 4. **Fraud transactions are larger.** The average fraud transaction is $102.69 against $42.65 for legitimate ones.
 5. **Security errors carry a signal, but it's narrow.** Bad CVV (2.014%), Bad Expiration (1.094%), and Bad PIN (0.974%) transactions have a much higher fraud rate than the 0.153% baseline. However, only 1.6% of transactions have an error, and they hold about 4% of fraud cases.
 6. **Customer and card attributes matter little.** Fraud rates are 0.14% to 0.15% for ages 25 to 64 and 0.191% for 65 and over. Across card types and chip status the range is 0.139% to 0.218%, with no consistent chip effect. In this dataset the fraud signal sits in the transaction (channel, amount, merchant category), not in who the customer is or what card they hold.
-7. **Time of day.** Fraud is 0.21% to 0.32% per hour from 13:00 to 19:00 and falls to near zero from 20:00. [add hours 00:00-12:00 after running the time-band query]
+7. **Time of day.** Fraud is concentrated in the daytime. The 13:00 to 19:59 window has the highest rate (0.245%), 06:00 to 12:59 is 0.136%, and from 20:00 to 05:59 it is about 0.015% (87 cases). About 98% of fraud cases fall between 06:00 and 19:59, even though the night hours carry about 16% of labelled transactions.
 
 ## Spending patterns
 
@@ -48,12 +48,12 @@ All fraud rates use labelled transactions only. Overall: 5,609 fraud cases in 3,
 
 ## Limitations
 
-- About 33% of transactions have no fraud label (the source labels file is a training split). The missing labels are spread evenly by year and hour, but fraud counts apply only to the labelled two-thirds.
+- About 33% of transactions have no fraud label (the source file is named `train_fraud_labels`, so the labels may be a training split). The missing labels are spread evenly by year and hour, but fraud counts apply only to the labelled two-thirds.
 - Only 5,609 fraud cases exist, so rates for small categories and error types are noisy. Category rankings use a minimum of 10,000 labelled transactions.
-- The dataset is described as built for synthetic fraud detection, and some patterns (swipe being the safest channel, fraud almost vanishing after 8 PM) are unlike real-world fraud. Treat the findings as patterns in this dataset.
+- The dataset is described as built for synthetic fraud detection, and some patterns (swipe being the safest channel, fraud almost vanishing overnight from 8 PM to 6 AM) are unlike real-world fraud. Treat the findings as patterns in this dataset.
 - 2019 covers January to October only.
 - `current_age` is age at the dataset's reference date, not at transaction time. With only 2,000 customers, age groups are really groups of customers.
-- 8 of 2,000 users have a yearly income under $1,000 and a per-capita income of 0 and were excluded from income analysis.
+- 8 of 2,000 users have a yearly income under $1,000 and a per-capita income of 0. No query here uses income, but these rows should be excluded if you extend the analysis to income.
 
 ## Repository structure
 
