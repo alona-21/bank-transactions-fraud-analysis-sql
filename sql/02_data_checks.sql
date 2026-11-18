@@ -26,7 +26,7 @@ SELECT COUNT(*) FROM transactions WHERE amount IS NULL;
 -- Finding: several users have yearly_income under 1,000 (the lowest is 1)
 -- and per_capita_income of 0. Income analysis should filter
 -- yearly_income >= 1000.
-SELECT COUNT(*) FROM users WHERE yearly_income < 1000;   -- [count not recorded]
+SELECT COUNT(*) FROM users WHERE yearly_income < 1000;   -- 8 of 2,000 users
 SELECT id, yearly_income, per_capita_income, total_debt
 FROM users ORDER BY yearly_income LIMIT 10;
 
