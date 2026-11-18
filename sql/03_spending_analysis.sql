@@ -5,10 +5,10 @@
 -- ============================================================
 
 -- 1. Monthly volume and spend
--- Finding: in the months reviewed (2016 to mid-2017) volume stays between
--- about 107K and 118K transactions and spend between about $4.6M and
--- $5.1M per month, with no strong growth. February is lower because it
--- has fewer days.   [CHECK: confirm the pattern holds for all 46 months]
+-- Finding: across all 46 months (2016-01 to 2019-10), volume stays between
+-- about 106K and 119K transactions and spend between about $4.5M and
+-- $5.1M per month, with no strong growth or decline. February is lower
+-- because it has fewer days.
 SELECT DATE_TRUNC('month', date) AS month,
        COUNT(*)    AS txns,
        SUM(amount) AS total
