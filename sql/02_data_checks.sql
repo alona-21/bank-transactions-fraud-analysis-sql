@@ -30,9 +30,10 @@ SELECT COUNT(*) FROM users WHERE yearly_income < 1000;   -- 8 of 2,000 users
 SELECT id, yearly_income, per_capita_income, total_debt
 FROM users ORDER BY yearly_income LIMIT 10;
 
--- 5. Empty strings in text columns (not run yet)
--- The errors column uses '' (not NULL) for "no error".
-SELECT COUNT(*) FROM transactions WHERE errors = '';
+-- 5. Empty strings in text columns
+-- Finding: the errors column stores '' (not NULL) for "no error":
+-- 5,261,035 of 5,346,183 transactions (98.4%) have an empty string.
+SELECT COUNT(*) FROM transactions WHERE errors = '';   -- 5,261,035
 
 -- 6. How many transactions have a fraud label?
 -- Finding: No 3,576,375 | Yes 5,609 | no label 1,764,199 (about 33%).
