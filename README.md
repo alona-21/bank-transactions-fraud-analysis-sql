@@ -1,12 +1,12 @@
 # Fraud and Spending Analysis of Bank Card Transactions
 
-A SQL project in PostgreSQL on about 5.3 million card transactions (2016 to October 2019). It asks where fraud concentrates and which transaction, customer, and card attributes are worth screening on.
+An SQL project in PostgreSQL on about 5.3 million card transactions (2016 to October 2019). It asks where fraud concentrates and which transaction, customer, and card attributes are worth screening on.
 
 ## Data
 
-- **Source:** *Financial Transactions Dataset: Analytics*, created by Caixabank Tech for the 2024 AI Hackathon, on Kaggle. [add link to the dataset page]
+- **Source:** *Financial Transactions Dataset: Analytics*, created by Caixabank Tech for the 2024 AI Hackathon, on Kaggle. [https://www.kaggle.com/datasets/computingvictor/transactions-fraud-datasets]
 - **License:** Apache 2.0.
-- **What I used:** a subset of the original (about 1.4 GB, 2010s). [add one line on how the subset was made]
+- **What I used:** A subset of the original dataset (about 1.4 GB), limited to 2016 to October 2019 and to the columns needed for this analysis. Card numbers and CVV were not used. Row counts are listed in the table below.
 
 | Table | Rows | Notes |
 |---|---|---|
@@ -16,7 +16,7 @@ A SQL project in PostgreSQL on about 5.3 million card transactions (2016 to Octo
 | cards | 6,146 | card type, limit, chip; card numbers and CVV not used |
 | mcc_codes | 109 | merchant category descriptions |
 
-The data files are not included in this repository. Download them from Kaggle and import them into PostgreSQL (the setup steps are in `sql/01_cleaning_and_setup.sql`).
+The data files are not included. The original dataset is on Kaggle (link above). The SQL expects five tables (users, cards, mcc_codes, transactions, fraud_labels) imported from CSV; sql/01_cleaning_and_setup.sql then fixes the column types and adds keys and indexes.
 
 ## Tools
 
@@ -43,7 +43,7 @@ All fraud rates use labelled transactions only. Overall: 5,609 fraud cases in 3,
 
 ## Spending patterns
 
-- Monthly volume is steady at roughly 107K to 118K transactions and $4.6M to $5.1M per month. [confirm across all 46 months]
+- Monthly volume is steady at roughly 106K to 119K transactions and $4.5M to $5.1M per month across all 46 months, with no strong growth or decline.
 - Money Transfer leads spending ($21.1M). Grocery Stores lead volume (639K transactions at about $26 each). Utilities have the highest average ticket of the top ten (about $113).
 
 ## Limitations
